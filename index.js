@@ -41,6 +41,6 @@ app.use(bodyParser.json())
 const routes = require('./routes')
 routes(app)
 
-app.listen(3008, function(){
+app.listen(3008, () => {
   console.log('running on port 3008')
 })
