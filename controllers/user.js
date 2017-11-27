@@ -12,10 +12,7 @@ exports.signup = function (req, res) {
         if (err) return res.status(500).json({msg: '注册失败，请重试',err});
         setTimeout(() => res.json({
           // 本地开发测试，添加延迟效果
-          user: {
-            _id: user._id,
-            username: user.username
-          },
+          user,
           msg: '注册成功'
         }), 400)
       })
@@ -31,10 +28,7 @@ exports.update = function (req, res) {
       user.save(function (err,user) {
         if (err) return res.status(500).json({msg: '更新失败，请重试',err});
         res.json({
-          user: {
-            _id: user._id,
-            username: user.username
-          },
+          user,
           msg: '更新成功'
         })
       })
@@ -53,12 +47,7 @@ exports.login = function (req, res) {
       if (err) return res.status(500).json({msg: '登陆失败，请重试',err});
       if (isMatch) {
         setTimeout(() => res.json({
-          user: {
-            _id: user._id,
-            username: user.username,
-            avatar: user.avatar,
-            followings: user.followings
-          },
+          user,
           msg: '登陆成功'
         }), 4000)
       }else {
@@ -76,17 +65,12 @@ exports.logout = function (req,res) {
 // 通过 id 拿到用户信息
 
 exports.getById  = function (req, res) {
-  User.findOne({_id: req.params.userId},function (err,user) {
+  User.findOne({_id: req.params.id},function (err,user) {
     if (err) {
       return res.status(500).json({ msg: '查找用户失败', err })
     }
     if (user) {
-      return setTimeout(() => res.json({msg: '读取用户成功', user: {
-        _id: user._id,
-        username: user.username,
-        avatar: user.avatar,
-        followings: user.followings
-      }}), 3000)
+      return setTimeout(() => res.json({ msg: '读取用户成功', user }), 3000)
     } else {
       console.log('用户未找到')
       return res.status(500).json({ msg: '用户未找到' })
