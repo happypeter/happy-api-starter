@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-let routes = require('./routes')
+const routes = require('./routes')
 routes(app)
 
 app.listen(3008, function(){

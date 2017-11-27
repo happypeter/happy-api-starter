@@ -15,7 +15,7 @@ var UserSchema = new mongoose.Schema(
 UserSchema.methods = {
   comparePassword: function (_password, cb) {
     // TODO: bcrypt here
-      let isMatch = false
+      const isMatch = false
       if(this.password === _password) {
         isMatch = true
       }

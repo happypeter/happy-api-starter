@@ -1,5 +1,6 @@
-let User = require('../models/user.js')
+const User = require('../models/user.js')
 
+// 注册
 exports.signup = function (req, res) {
   User.findOne({username:_user.username},function (err,user) {
     if (err) return res.status(500).json({msg: '注册失败，请重试',err});
@@ -20,11 +21,14 @@ exports.signup = function (req, res) {
   })
 }
 
+// 更新用户信息
 exports.update = function (req, res) {
-  let _user = req.body;
+  const _user = req.body;
   User.findOne({username:_user.username},function (err,user) {
     if (err) return res.status(500).json({msg: '更新失败，请重试',err});
-    if (user) {
+    if (!user) {
+      res.status(400).json({ msg: '未找到记录' })
+    }else {
       user.save(function (err,user) {
         if (err) return res.status(500).json({msg: '更新失败，请重试',err});
         res.json({
@@ -36,12 +40,13 @@ exports.update = function (req, res) {
   })
 }
 
+// 登录
 exports.login = function (req, res) {
   var _user = req.body;
   User.findOne({username:_user.username.trim()},function (err,user) {
     if (err) return res.status(500).json({msg: '登陆失败，请重试',err});
     if (!user) {
-      return res.status(401).json({msg: '登陆失败，用户名不存在'})
+      res.status(400).json({ msg: '未找到记录' })
     }
     user.comparePassword(_user.password, function (err, isMatch) {
       if (err) return res.status(500).json({msg: '登陆失败，请重试',err});
@@ -63,17 +68,15 @@ exports.logout = function (req,res) {
 }
 
 // 通过 id 拿到用户信息
-
 exports.getById  = function (req, res) {
   User.findOne({_id: req.params.id},function (err,user) {
     if (err) {
       return res.status(500).json({ msg: '查找用户失败', err })
     }
-    if (user) {
-      return setTimeout(() => res.json({ msg: '读取用户成功', user }), 3000)
+    if (!user) {
+      res.status(400).json({ msg: '未找到记录' })
     } else {
-      console.log('用户未找到')
-      return res.status(500).json({ msg: '用户未找到' })
+      return setTimeout(() => res.json({ msg: '读取用户成功', user }), 3000)
     }
   })
 }
