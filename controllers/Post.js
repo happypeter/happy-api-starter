@@ -23,7 +23,7 @@ exports.all = function (req, res) {
   Post.find(function (err, posts) {
     if (err) return res.status(500).json({ msg: '查找失败', err })
     if (posts) {
-      return setTimeout(() => res.json({ msg: '读取成功', posts }), 4000)
+      return setTimeout(() => res.json({ msg: '读取成功', posts }), 400)
     }
   })
 }

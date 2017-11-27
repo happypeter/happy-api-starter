@@ -55,7 +55,7 @@ exports.login = function (req, res) {
         setTimeout(() => res.json({
           user,
           msg: '登陆成功'
-        }), 4000)
+        }), 400)
       }else {
         res.status(401).json({msg: '密码错误，请核对后重试'})
       }
@@ -77,7 +77,7 @@ exports.getById  = function (req, res) {
     if (!user) {
       res.status(400).json({ msg: '未找到记录' })
     } else {
-      return setTimeout(() => res.json({ msg: '读取用户成功', user }), 3000)
+      return setTimeout(() => res.json({ msg: '读取用户成功', user }), 300)
     }
   })
 }
