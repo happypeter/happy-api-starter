@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var ObjectId = mongoose.Schema.Types.ObjectId;
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
-var UserSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     username: { type: String, maxlength: 18 },
     password: String,
@@ -16,7 +16,7 @@ UserSchema.methods = {
   comparePassword: (_password, cb) => {
     // TODO: bcrypt here
       let isMatch = false
-      if(this.password === _password) {
+      if (this.password === _password) {
         isMatch = true
       }
       cb(null, isMatch);
