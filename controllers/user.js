@@ -79,7 +79,7 @@ exports.getById  = (req, res) => {
 }
 
 // 读取所有用户
-exports.all = function(req, res) {
+exports.all = (req, res) => {
   User.find({}, '_id user').exec().then(
     users => {
     setTimeout(() =>
