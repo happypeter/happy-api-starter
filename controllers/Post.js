@@ -1,4 +1,4 @@
-const Post = require('../models/post.js');
+const Post = require('../models/post.js')
 
 // 删除一篇文章
 exports.remove = (req, res) => {
@@ -9,8 +9,7 @@ exports.remove = (req, res) => {
       if (!post) {
         // 如果 id 不存在，err 为 null 但是 post 会为空
         res.status(400).json({ msg: '未找到记录' })
-      }
-      else {
+      } else {
         post.remove(err => {
           if (err) return res.status(500).json({error: err.message})
           setTimeout(() => res.json({ msg: '删除成功！' }), 400)
@@ -36,7 +35,7 @@ exports.all = (req, res) => {
 exports.new = (req, res) => {
   const _post = req.body
   const post = new Post(_post)
-  post.save((err, post) =>{
+  post.save((err, post) => {
     if (err) return res.status(500).json({ msg: '保存失败，请重试', err })
     res.json({
       post,

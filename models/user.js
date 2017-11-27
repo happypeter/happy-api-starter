@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 const UserSchema = new mongoose.Schema(
   {
@@ -8,18 +8,18 @@ const UserSchema = new mongoose.Schema(
     avatar: String,
     followings: [{ type: ObjectId, ref: 'User' }]
   },
-  { timestamps:true }
+  { timestamps: true }
 )
 
 UserSchema.methods = {
   comparePassword: (_password, cb) => {
     // TODO: bcrypt here
-      let isMatch = false
-      if (this.password === _password) {
-        isMatch = true
-      }
-      cb(null, isMatch);
+    let isMatch = false
+    if (this.password === _password) {
+      isMatch = true
+    }
+    cb(null, isMatch)
   }
 }
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema)

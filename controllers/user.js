@@ -3,15 +3,15 @@ const User = require('../models/user.js')
 // 注册
 exports.signup = (req, res) => {
   const _user = req.body
-  User.findOne({username:_user.username}).exec(
+  User.findOne({username: _user.username}).exec(
     (err, user) => {
-      if (err) return res.status(500).json({msg: '注册失败，请重试',err});
+      if (err) return res.status(500).json({msg: '注册失败，请重试', err})
       if (user) {
         return res.status(403).json({msg: '用户名重复，请重新注册'})
       } else {
-        user = new User(_user);
+        user = new User(_user)
         user.save((err, user) => {
-          if (err) return res.status(500).json({msg: '注册失败，请重试',err});
+          if (err) return res.status(500).json({msg: '注册失败，请重试', err})
           setTimeout(() => res.json({
             // 本地开发测试，添加延迟效果
             user: {
@@ -29,16 +29,16 @@ exports.signup = (req, res) => {
 
 // 登录
 exports.login = (req, res) => {
-  const _user = req.body;
-  User.findOne({username: _user.username}).
-    exec(
+  const _user = req.body
+  User.findOne({username: _user.username})
+    .exec(
       (err, user) => {
-        if (err) return res.status(500).json({msg: '登录失败，请重试',err});
+        if (err) return res.status(500).json({msg: '登录失败，请重试', err})
         if (!user) {
           res.status(400).json({ msg: '未找到记录' })
         }
         user.comparePassword(_user.password, (err, isMatch) => {
-          if (err) return res.status(500).json({msg: '登录失败，请重试',err});
+          if (err) return res.status(500).json({msg: '登录失败，请重试', err})
           if (isMatch) {
             setTimeout(() => res.json({
               user: {
@@ -48,7 +48,7 @@ exports.login = (req, res) => {
               },
               msg: '登录成功'
             }), 400)
-          }else {
+          } else {
             res.status(401).json({msg: '密码错误，请核对后重试'})
           }
         })
@@ -57,15 +57,15 @@ exports.login = (req, res) => {
 }
 
 // 登出功能
-exports.logout = (req,res) => {
+exports.logout = (req, res) => {
   res.json({ msg: '登出成功' })
 }
 
 // 通过 id 拿到用户信息
-exports.getById  = (req, res) => {
-  User.findOne({_id: req.params.id}, '_id username').
-  exec(
-    (err,user) => {
+exports.getById = (req, res) => {
+  User.findOne({_id: req.params.id}, '_id username')
+  .exec(
+    (err, user) => {
       if (err) {
         return res.status(500).json({ msg: '查找用户失败', err })
       }
@@ -82,7 +82,7 @@ exports.getById  = (req, res) => {
 exports.all = (req, res) => {
   User.find({}, '_id user').exec().then(
     users => {
-    setTimeout(() =>
+      setTimeout(() =>
       res.json({ users }),
       200)
     }

@@ -1,21 +1,21 @@
 const express = require('express')
 const app = express()
-const cors = require('cors');
-const mongoose = require('mongoose');
-const path = require('path');
+const cors = require('cors')
+const mongoose = require('mongoose')
+const path = require('path')
 const morgan = require('morgan')
 
 app.use(cors())
 app.use(morgan('tiny'))
 
 // ES6 promises
-mongoose.Promise = Promise;
+mongoose.Promise = Promise
 
 // mongodb connection
-mongoose.connect("mongodb://localhost:27017/sandbox", {
+mongoose.connect('mongodb://localhost:27017/sandbox', {
   useMongoClient: true,
   promiseLibrary: global.Promise
-});
+})
 
 var db = mongoose.connection
 
@@ -26,7 +26,6 @@ db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', () => {
   console.log(`Connected to Mongo at: ${new Date()}`)
 })
-
 
 app.use(express.static(path.join(__dirname, 'public')))
 
