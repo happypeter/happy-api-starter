@@ -14,7 +14,11 @@ exports.signup = function (req, res) {
         if (err) return res.status(500).json({msg: '注册失败，请重试',err});
         setTimeout(() => res.json({
           // 本地开发测试，添加延迟效果
-          user,
+          user: {
+            // 选择需要返回的字段，千万别把密码也给返回了
+            _id: user._id,
+            username: user.username
+          },
           msg: '注册成功'
         }), 400)
       })
