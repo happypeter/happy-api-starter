@@ -25,25 +25,28 @@ exports.signup = function (req, res) {
 // 登录
 exports.login = function (req, res) {
   const _user = req.body;
-  User.findOne({username: _user.username},function (err,user) {
-    if (err) return res.status(500).json({msg: '登陆失败，请重试',err});
-    if (!user) {
-      res.status(400).json({ msg: '未找到记录' })
-    }
-    user.comparePassword(_user.password, function (err, isMatch) {
-      if (err) return res.status(500).json({msg: '登陆失败，请重试',err});
-      if (isMatch) {
-        setTimeout(() => res.json({
-          user: {
-            _id: user._id
-          },
-          msg: '登陆成功'
-        }), 400)
-      }else {
-        res.status(401).json({msg: '密码错误，请核对后重试'})
+  User.findOne({username: _user.username}).
+    exec(
+      (err,user) => {
+        if (err) return res.status(500).json({msg: '登陆失败，请重试',err});
+        if (!user) {
+          res.status(400).json({ msg: '未找到记录' })
+        }
+        user.comparePassword(_user.password, function (err, isMatch) {
+          if (err) return res.status(500).json({msg: '登陆失败，请重试',err});
+          if (isMatch) {
+            setTimeout(() => res.json({
+              user: {
+                _id: user._id
+              },
+              msg: '登陆成功'
+            }), 400)
+          }else {
+            res.status(401).json({msg: '密码错误，请核对后重试'})
+          }
+        })
       }
-    })
-  })
+    )
 }
 
 // 登出功能
