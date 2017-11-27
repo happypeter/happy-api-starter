@@ -35,7 +35,7 @@ exports.login = (req, res) => {
       (err, user) => {
         if (err) return res.status(500).json({msg: '登录失败，请重试', err})
         if (!user) {
-          res.status(400).json({ msg: '未找到记录' })
+          res.status(400).json({ msg: '用户不存在' })
         }
         user.comparePassword(_user.password, (err, isMatch) => {
           if (err) return res.status(500).json({msg: '登录失败，请重试', err})
