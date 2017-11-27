@@ -1,37 +1,38 @@
 const User = require('../models/user.js')
 
 // 注册
-exports.signup = function (req, res) {
+exports.signup = (req, res) => {
   const _user = req.body
-  User.findOne({username:_user.username},function (err,user) {
-    if (err) return res.status(500).json({msg: '注册失败，请重试',err});
-    if (user) {
-      return res.status(403).json({msg: '用户名重复，请重新注册'})
-    } else {
-      _user.username = _user.username.trim()
-      user = new User(_user);
-      user.save(function (err,user) {
-        if (err) return res.status(500).json({msg: '注册失败，请重试',err});
-        setTimeout(() => res.json({
-          // 本地开发测试，添加延迟效果
-          user: {
-            // 选择需要返回的字段，千万别把密码也给返回了
-            _id: user._id,
-            username: user.username
-          },
-          msg: '注册成功'
-        }), 400)
-      })
+  User.findOne({username:_user.username}).exec(
+    (err, user) => {
+      if (err) return res.status(500).json({msg: '注册失败，请重试',err});
+      if (user) {
+        return res.status(403).json({msg: '用户名重复，请重新注册'})
+      } else {
+        user = new User(_user);
+        user.save((err, user) => {
+          if (err) return res.status(500).json({msg: '注册失败，请重试',err});
+          setTimeout(() => res.json({
+            // 本地开发测试，添加延迟效果
+            user: {
+              // 选择需要返回的字段，千万别把密码也给返回了
+              _id: user._id,
+              username: user.username
+            },
+            msg: '注册成功'
+          }), 400)
+        })
+      }
     }
-  })
+  )
 }
 
 // 登录
-exports.login = function (req, res) {
+exports.login = (req, res) => {
   const _user = req.body;
   User.findOne({username: _user.username}).
     exec(
-      (err,user) => {
+      (err, user) => {
         if (err) return res.status(500).json({msg: '登陆失败，请重试',err});
         if (!user) {
           res.status(400).json({ msg: '未找到记录' })
@@ -56,7 +57,7 @@ exports.login = function (req, res) {
 }
 
 // 登出功能
-exports.logout = function (req,res) {
+exports.logout = (req,res) => {
   res.json({ msg: '登出成功' })
 }
 
