@@ -37,7 +37,9 @@ exports.login = function (req, res) {
           if (isMatch) {
             setTimeout(() => res.json({
               user: {
-                _id: user._id
+                // 选择需要返回的字段，千万别把密码也给返回了
+                _id: user._id,
+                username: user.username
               },
               msg: '登陆成功'
             }), 400)
