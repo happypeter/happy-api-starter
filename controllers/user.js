@@ -22,25 +22,6 @@ exports.signup = function (req, res) {
   })
 }
 
-// 更新用户信息
-exports.update = function (req, res) {
-  const _user = req.body;
-  User.findOne({username:_user.username},function (err,user) {
-    if (err) return res.status(500).json({msg: '更新失败，请重试',err});
-    if (!user) {
-      res.status(400).json({ msg: '未找到记录' })
-    }else {
-      user.save(function (err,user) {
-        if (err) return res.status(500).json({msg: '更新失败，请重试',err});
-        res.json({
-          user,
-          msg: '更新成功'
-        })
-      })
-    }
-  })
-}
-
 // 登录
 exports.login = function (req, res) {
   var _user = req.body;
