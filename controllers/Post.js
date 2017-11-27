@@ -1,21 +1,23 @@
 const Post = require('../models/post.js');
 
 // 删除一篇文章
-exports.remove = function (req, res) {
+exports.remove =  (req, res) => {
   const { id } = req.params
-  Post.findById({_id: id}, function(err, post) {
-    if (err) return res.status(500).json({ msg: '查找失败', err })
-    if (!post) {
-      // 如果 id 不存在，err 为 null 但是 post 会为空
-      res.status(400).json({ msg: '未找到记录' })
+  Post.findById({_id: id}).exec(
+    (err, post) => {
+      if (err) return res.status(500).json({ msg: '查找失败', err })
+      if (!post) {
+        // 如果 id 不存在，err 为 null 但是 post 会为空
+        res.status(400).json({ msg: '未找到记录' })
+      }
+      else {
+        post.remove(function(err){
+          if (err) return res.status(500).json({error: err.message})
+          setTimeout(() => res.json({ msg: '删除成功！' }), 400)
+        })
+      }
     }
-    else {
-      post.remove(function(err){
-        if (err) return res.status(500).json({error: err.message})
-        setTimeout(() => res.json({ msg: '删除成功！' }), 400)
-      })
-    }
-  })
+  )
 }
 
 // 列出所有文章
