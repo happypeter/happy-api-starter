@@ -1,22 +1,20 @@
 let User = require('../models/user.js')
 
 exports.signup = function (req, res) {
-  let _user = req.body;
   User.findOne({username:_user.username},function (err,user) {
     if (err) return res.status(500).json({msg: '注册失败，请重试',err});
     if (user) {
       return res.status(403).json({msg: '用户名重复，请重新注册'})
-    }else {
+    } else {
       _user.username = _user.username.trim()
       user = new User(_user);
       user.save(function (err,user) {
         if (err) return res.status(500).json({msg: '注册失败，请重试',err});
         setTimeout(() => res.json({
+          // 本地开发测试，添加延迟效果
           user: {
             _id: user._id,
-            username: user.username,
-            avatar: user.avatar,
-            followings: user.followings
+            username: user.username
           },
           msg: '注册成功'
         }), 400)
@@ -35,9 +33,7 @@ exports.update = function (req, res) {
         res.json({
           user: {
             _id: user._id,
-            username: user.username,
-            avatar: user.avatar,
-            followings: user.followings
+            username: user.username
           },
           msg: '更新成功'
         })
@@ -98,73 +94,6 @@ exports.getById  = function (req, res) {
   })
 }
 
-exports.removeFollowing = function(req, res) {
-  User.findOne({ _id: req.body.currentUserId })
-  .exec().then(
-    user => {
-      let followings = user.followings
-      let { userId } = req.body
-      console.log('followings', followings)
-      console.log('userId', userId)
-      let index = followings.indexOf(userId)
-      console.log('xxxx', index)
-      followings.splice(index, 1);
-      console.log('followings--0000', followings)
-      user.save(() => {
-        res.json({
-          user: {
-            username: user.username,
-            _id: user._id,
-            avatar: user.avatar,
-            followings: user.followings
-          },
-          msg: '好友删除成功'
-        })
-      })
-    }
-  )
-}
-
-exports.addFollowing = function (req, res) {
-  User.findOne({ _id: req.body.currentUserId })
-  // .populate('followings', 'username')
-  .exec().then(
-    user => {
-      let followings = user.followings
-      let { userId } = req.body
-      let followingsCopy = followings.map(item => {
-        return item.toString()
-      })
-      let isHere = followingsCopy.includes(userId)
-      if (!isHere) {
-        followings.push(req.body.userId)
-        user.save(() => {
-          res.json({
-            msg: "添加成功",
-            user: {
-              username: user.username,
-              _id: user._id,
-              avatar: user.avatar,
-              followings: user.followings
-            }
-          })
-        })
-      } else {
-        res.json({
-          msg: '早就添加过了',
-          user: {
-            username: user.username,
-            _id: user._id,
-            avatar: user.avatar,
-            followings: user.followings
-          }
-         })
-      }
-    }
-  )
-}
-
-
 // 读取所有用户
 exports.all = function(req, res) {
   User.find().exec().then(
@@ -174,33 +103,4 @@ exports.all = function(req, res) {
       200)
     }
   )
-}
-
-
-exports.updateAvatar = function(req, res) {
-  let user = new User()
-  User.findOne({_id: req.body.userId},function (err,user) {
-    if(user) {
-      if(req.file && req.file.filename) {
-        user.avatar = req.file.filename
-      }
-      user.save(err => {
-        if(err) return console.log(err)
-        res.json({
-          user: {
-            avatar: user.avatar,
-            followings: user.followings,
-            _id: user._id,
-            username: user.username,
-          },
-          message: '用户头像更新成功'
-        })
-      })
-    } else {
-      res.status(404).json({
-        message: '没有该用户'
-      })
-    }
-  })
-
 }

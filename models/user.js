@@ -9,11 +9,12 @@ var UserSchema = new mongoose.Schema(
     avatar: String,
     followings: [{ type: ObjectId, ref: 'User' }]
   },
-  {timestamps:true}
+  { timestamps:true }
 )
 
 UserSchema.methods = {
   comparePassword: function (_password, cb) {
+    // TODO: bcrypt here
       let isMatch = false
       if(this.password === _password) {
         isMatch = true

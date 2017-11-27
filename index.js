@@ -5,10 +5,8 @@ const mongoose = require('mongoose');
 const path = require('path');
 const morgan = require('morgan')
 
-
 app.use(cors())
 app.use(morgan('tiny'))
-
 
 // ES6 promises
 mongoose.Promise = Promise;
@@ -28,10 +26,6 @@ db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', () => {
   console.log(`Connected to Mongo at: ${new Date()}`)
 })
-
-
-
-
 
 
 app.use(express.static(path.join(__dirname, 'public')))
