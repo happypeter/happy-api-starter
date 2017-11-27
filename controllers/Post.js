@@ -33,10 +33,10 @@ exports.all = (req, res) => {
 }
 
 // 新建一篇文章
-exports.new = function (req, res) {
+exports.new = (req, res) => {
   const _post = req.body
   const post = new Post(_post)
-  post.save(function (err, post) {
+  post.save((err, post) =>{
     if (err) return res.status(500).json({ msg: '保存失败，请重试', err })
     res.json({
       post,
