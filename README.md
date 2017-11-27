@@ -2,6 +2,17 @@
 
 happypeter 的  REST API 脚手架代码。适合使用 es6/express/mongodb 的你。
 
+
+### 安装启动
+
+```
+git clone git@github.com:happypeter/happy-api-starter
+cd happy-api-starter
+npm install
+npm run db
+npm run dev
+```
+
 ### 功能
 
 - CORS 支持通过 [cors](https://github.com/troygoode/node-cors)
