@@ -24,8 +24,8 @@ exports.signup = function (req, res) {
 
 // 登录
 exports.login = function (req, res) {
-  var _user = req.body;
-  User.findOne({username:_user.username.trim()},function (err,user) {
+  const _user = req.body;
+  User.findOne({username: _user.username},function (err,user) {
     if (err) return res.status(500).json({msg: '登陆失败，请重试',err});
     if (!user) {
       res.status(400).json({ msg: '未找到记录' })
@@ -34,7 +34,9 @@ exports.login = function (req, res) {
       if (err) return res.status(500).json({msg: '登陆失败，请重试',err});
       if (isMatch) {
         setTimeout(() => res.json({
-          user,
+          user: {
+            _id: user._id
+          },
           msg: '登陆成功'
         }), 400)
       }else {
@@ -50,22 +52,25 @@ exports.logout = function (req,res) {
 }
 
 // 通过 id 拿到用户信息
-exports.getById  = function (req, res) {
-  User.findOne({_id: req.params.id},function (err,user) {
-    if (err) {
-      return res.status(500).json({ msg: '查找用户失败', err })
+exports.getById  = (req, res) => {
+  User.findOne({_id: req.params.id}, '_id username').
+  exec(
+    (err,user) => {
+      if (err) {
+        return res.status(500).json({ msg: '查找用户失败', err })
+      }
+      if (!user) {
+        res.status(400).json({ msg: '未找到记录' })
+      } else {
+        return setTimeout(() => res.json({ msg: '读取用户成功', user }), 300)
+      }
     }
-    if (!user) {
-      res.status(400).json({ msg: '未找到记录' })
-    } else {
-      return setTimeout(() => res.json({ msg: '读取用户成功', user }), 300)
-    }
-  })
+  )
 }
 
 // 读取所有用户
 exports.all = function(req, res) {
-  User.find().exec().then(
+  User.find({}, '_id user').exec().then(
     users => {
     setTimeout(() =>
       res.json({ users }),

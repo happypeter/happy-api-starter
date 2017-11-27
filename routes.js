@@ -7,7 +7,7 @@ module.exports = function (app) {
   app.post('/user/login', User.login)
   app.get('/user/logout', User.logout)
   app.get('/users', User.all)
-  app.get('/user/:userId', User.getById)
+  app.get('/user/:id', User.getById)
 
   // post
   app.post('/post', Post.new)
