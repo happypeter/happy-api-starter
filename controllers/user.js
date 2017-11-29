@@ -80,7 +80,7 @@ exports.getById = (req, res) => {
 
 // 读取所有用户
 exports.all = (req, res) => {
-  User.find({}, '_id user').exec().then(
+  User.find({}, '_id username').exec().then(
     users => {
       setTimeout(() =>
       res.json({ users }),
