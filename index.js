@@ -12,10 +12,7 @@ app.use(morgan('tiny'))
 mongoose.Promise = Promise
 
 // mongodb connection
-mongoose.connect('mongodb://localhost:27017/sandbox', {
-  useMongoClient: true,
-  promiseLibrary: global.Promise
-})
+mongoose.connect('mongodb://localhost:27017/sandbox')
 
 var db = mongoose.connection
 
