@@ -1,31 +1,25 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const mongoose = require('mongoose')
 const path = require('path')
 const morgan = require('morgan')
 
 app.use(cors())
 app.use(morgan('tiny'))
 
-// ES6 promises
-mongoose.Promise = Promise
+// mongoose START
 
-// mongodb connection
-mongoose.connect('mongodb://localhost:27017/sandbox')
-
-var db = mongoose.connection
-
-// mongodb error
-db.on('error', console.error.bind(console, 'connection error:'))
-
-// mongodb connection open
-db.once('open', () => {
-  console.log(`Connected to Mongo at: ${new Date()}`)
+const mongoose = require('mongoose')
+mongoose.Promise = global.Promise
+mongoose.connect('mongodb://localhost:27017/dbname', {
+  useMongoClient: true
 })
+var db = mongoose.connection
+db.on('error', () => console.error('Mongo Failed to Connect!!!!'))
+db.on('connected', () => console.log('Mongo Connected'))
+// mongoose END
 
 app.use(express.static(path.join(__dirname, 'public')))
-
 const bodyParser = require('body-parser')
 
 // parse application/x-www-form-urlencoded
