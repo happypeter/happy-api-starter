@@ -1,6 +1,10 @@
 # Happy API Starter
 
-happypeter 的  REST API 脚手架代码。适合使用 es6/express/mongodb 的你。
+happypeter 的  REST API 脚手架代码。使用 es6/express/mongodb
+
+### 视频讲解
+
+https://haoqicat.com/express-love-api-v2
 
 ### 安装启动
 
