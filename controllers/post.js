@@ -16,7 +16,7 @@ exports.remove = async (req, res) => {
 exports.all = async (req, res) => {
   try {
     const posts = await Post.find()
-    res.json({ posts })
+    res.json(posts)
   } catch (err) {
     res.status(500).json({ msg: '读取失败', err })
   }
@@ -27,9 +27,7 @@ exports.new = async (req, res) => {
   const p = new Post(req.body)
   try {
     const post = await p.save()
-    res.json({
-      post
-    })
+    res.json(post)
   } catch (err) {
     res.status(500).json({ msg: '保存失败', err })
   }
