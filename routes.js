@@ -13,4 +13,5 @@ module.exports = app => {
   app.post('/post', Post.new)
   app.delete('/post/:id', Post.remove)
   app.get('/posts', Post.all)
+  app.put('/post/:id', Post.update)
 }
