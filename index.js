@@ -8,7 +8,6 @@ app.use(cors())
 app.use(morgan('tiny'))
 
 // mongoose START
-
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost:27017/dbname')
 const db = mongoose.connection
