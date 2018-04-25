@@ -10,7 +10,6 @@ app.use(morgan('tiny'))
 // mongoose START
 
 const mongoose = require('mongoose')
-mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost:27017/dbname')
 const db = mongoose.connection
 db.on('error', () => console.error('Mongo Failed to Connect!!!!'))
