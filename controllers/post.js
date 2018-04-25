@@ -1,6 +1,6 @@
 const Post = require('../models/post.js')
 
-// 删除一篇文章
+
 exports.remove = async (req, res) => {
   const { id } = req.params
   try {
@@ -12,7 +12,7 @@ exports.remove = async (req, res) => {
   }
 }
 
-// 列出所有文章
+
 exports.all = async (req, res) => {
   try {
     const posts = await Post.find()
@@ -22,7 +22,7 @@ exports.all = async (req, res) => {
   }
 }
 
-// 新建一篇文章
+
 exports.new = async (req, res) => {
   const p = new Post(req.body)
   try {
@@ -30,5 +30,19 @@ exports.new = async (req, res) => {
     res.json(post)
   } catch (err) {
     res.status(500).json({ msg: '保存失败', err })
+  }
+}
+
+
+export.update = async (req, res) => {
+  try {
+    const p = await Post.findById(req.params.id)
+    for (prop in req.body) {
+      p[prop] = req.body[prop]
+    }
+    const post = await p.save()
+    res.json(post)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
 }
