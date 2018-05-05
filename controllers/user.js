@@ -12,7 +12,8 @@ exports.signup = async (req, res) => {
     })
   } catch (err) {
     // 用户名，密码不能为空，在客户端判断，于是这里只有一种出错情况，就是用户名已经注册
-    if (err) return res.status(406).json({ msg: '用户名重复' })
+    console.log(err)
+    res.status(406).json({ msg: '用户名重复' })
   }
 }
 
@@ -26,6 +27,7 @@ exports.login = async (req, res) => {
       username: u.username
     })
   } catch (err) {
+    console.log(err)
     res.status(406).json({ msg: '用户名密码错误' })
   }
 }
@@ -36,10 +38,13 @@ exports.logout = (req, res) => {
 
 exports.getById = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.id }, '_id username')
-    // todo: 这里可以改成 findById
-    res.json({ user })
+    const user = await User.findById(req.params.id)
+    res.json({
+      id: user.id,
+      username: user.username
+    })
   } catch (err) {
+    console.log(err)
     res.status(400).json({ msg: '未找到记录!' })
   }
 }

@@ -3,11 +3,12 @@ const Post = require('../models/post.js')
 exports.remove = async (req, res) => {
   const { id } = req.params
   try {
-    const post = await Post.findById({ _id: id })
+    const post = await Post.findById(id)
     await post.remove()
     res.json({ msg: '删除成功！' })
   } catch (err) {
-    res.status(500).json({ msg: '查找记录失败', err })
+    console.log(err)
+    res.status(500).json({ msg: '查找记录失败' })
   }
 }
 
@@ -16,7 +17,8 @@ exports.all = async (req, res) => {
     const posts = await Post.find()
     res.json(posts)
   } catch (err) {
-    res.status(500).json({ msg: '读取失败', err })
+    console.log(err)
+    res.status(500).json({ msg: '读取失败' })
   }
 }
 
@@ -24,10 +26,14 @@ exports.new = async (req, res) => {
   const p = new Post(req.body)
   try {
     const post = await p.save()
-    res.json(post)
+    res.json({
+      id: post.id,
+      title: post.title,
+      content: post.content
+    })
   } catch (err) {
-    // todo: err 需要改成 err.message
-    res.status(500).json({ msg: '保存失败', err })
+    console.log(err)
+    res.status(500).json({ msg: '保存失败' })
   }
 }
 
@@ -40,6 +46,7 @@ exports.update = async (req, res) => {
     const post = await p.save()
     res.json(post)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    console.log(err)
+    res.status(500).json({ error: '更新失败' })
   }
 }
