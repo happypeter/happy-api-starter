@@ -6,11 +6,9 @@ exports.signup = async (req, res) => {
     const u = new User(_user)
     await u.save()
     res.json({
-      user: {
-        // 选择需要返回的字段，千万别把密码也给返回了
-        _id: u._id,
-        username: u.username
-      }
+      // 选择需要返回的字段，千万别把密码也给返回了
+      id: u._id,
+      username: u.username
     })
   } catch (err) {
     // 用户名，密码不能为空，在客户端判断，于是这里只有一种出错情况，就是用户名已经注册
